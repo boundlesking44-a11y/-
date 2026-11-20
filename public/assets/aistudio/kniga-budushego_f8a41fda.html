@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Звёздик и Книга-Звезда — книга будущего</title>
+<style>
+:root{--paper:#fff7e0;--ink:#1c1b3a;--glow:#ffd84d;--acc:#6c5cff;--bg1:#27226b;--bg2:#0b1030;box-sizing:border-box}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,var(--bg1),var(--bg2));color:#fff;font-family:Georgia,'Times New Roman',serif;display:flex;flex-direction:column;align-items:center;padding:14px;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(14px,env(safe-area-inset-bottom))}
+h1{font-size:18px;margin:0 0 10px;text-align:center;font-weight:normal;opacity:.9}
+.book{width:min(92vw,430px);aspect-ratio:3/4.3;position:relative;perspective:1600px}
+.pg{position:absolute;inset:0;background:var(--paper);color:var(--ink);border-radius:6px 16px 16px 6px;border-left:12px solid var(--acc);transform-origin:left center;transition:transform .8s ease,opacity .3s .5s;padding:16px 14px 28px;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;box-shadow:0 0 28px rgba(255,216,77,.35),0 8px 24px #0007;backface-visibility:hidden}
+.pg.t{transform:rotateY(-110deg);opacity:0;pointer-events:none}
+.pg h2{margin:0;font-size:21px}
+.tx{margin:0;font-size:16px;line-height:1.45}
+.num{position:absolute;bottom:7px;right:16px;font-size:12px;opacity:.6}
+.cover{background:linear-gradient(160deg,#1a1650,#4b3bd6);color:#fff}
+.cover h2{font-size:30px;line-height:1.1}
+svg.ill{width:100%;max-width:330px;height:auto;border-radius:12px;border:3px solid var(--acc);flex-shrink:0}
+.glow{animation:g 2s infinite alternate}
+@keyframes g{from{filter:drop-shadow(0 0 2px var(--glow))}to{filter:drop-shadow(0 0 12px var(--glow))}}
+.tw{animation:tw 2s infinite alternate}
+@keyframes tw{from{opacity:.25}to{opacity:1}}
+.fl{animation:fl 3s ease-in-out infinite alternate}
+@keyframes fl{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+.spin{animation:sp 12s linear infinite;transform-origin:center;transform-box:fill-box}
+@keyframes sp{to{transform:rotate(360deg)}}
+.flame{animation:fm .2s infinite alternate;transform-box:fill-box;transform-origin:top}
+@keyframes fm{from{transform:scaleY(.7)}to{transform:scaleY(1.2)}}
+#rk{transition:transform 2.5s ease-in;transform-box:fill-box}
+#rk.fly{transform:translate(110px,-190px) rotate(25deg)}
+.night .pg:not(.cover){background:#16143a;color:#ffe9a8}
+.night .glow{animation-duration:.8s}
+button{font:inherit;cursor:pointer}
+.ctl{display:flex;gap:10px;margin:12px 0 6px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ctl button,.btn{background:var(--glow);color:var(--ink);border:0;border-radius:20px;padding:8px 16px;font-weight:bold}
+.stars{display:flex;gap:14px}
+.s{width:52px;height:52px;cursor:pointer;opacity:.35;transition:.3s}
+.s.on{opacity:1;filter:drop-shadow(0 0 12px var(--glow))}
+.pocket{width:210px;height:110px;background:#d9b878;border:2px dashed #8a6a2d;border-radius:4px 4px 14px 14px;position:relative;cursor:pointer;color:var(--ink);flex-shrink:0}
+.key{position:absolute;left:25px;right:25px;bottom:8px;height:76px;background:#fff;border:2px solid var(--acc);border-radius:6px;font-size:14px;padding:8px;transition:transform .6s;color:var(--ink)}
+.key.out{transform:translateY(-72px)}
+.front{position:absolute;inset:36px 0 0;background:#c9a35e;border-radius:0 0 12px 12px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.flapbox{position:relative;width:250px;height:130px;cursor:pointer;flex-shrink:0}
+.under{position:absolute;inset:0;background:#1c1b3a;color:var(--glow);border-radius:8px;display:flex;align-items:center;justify-content:center;padding:10px;font-size:14px}
+.flap{position:absolute;inset:0;background:var(--acc);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;transform-origin:top;transition:transform .7s;backface-visibility:hidden;font-weight:bold}
+.flapbox.open .flap{transform:rotateX(-170deg)}
+.pl{display:flex;gap:10px}
+.pl svg{width:86px;height:86px;cursor:pointer;transition:transform .2s}
+.pl svg:hover{transform:scale(1.12)}
+.msg{min-height:20px;font-size:15px;font-weight:bold;margin:0}
+.friend{display:none;width:70px;height:77px}
+.lbl{text-align:left;font-family:'Times New Roman',serif;font-size:15px;line-height:1.9;width:100%}
+.fld{display:inline-block;min-width:150px;border-bottom:2px dashed #888;padding:0 4px;outline:none}
+.hint{font-size:12px;opacity:.75;max-width:430px;text-align:center;margin:4px 0 0}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0a3c"/><stop offset="1" stop-color="#5a3fd0"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff176"/><stop offset="1" stop-color="#ffb300"/></linearGradient>
+<symbol id="st" viewBox="0 0 100 100"><polygon points="50,5 61,38 96,38 68,58 79,92 50,71 21,92 32,58 4,38 39,38" fill="url(#gold)"/></symbol>
+<symbol id="zv" viewBox="0 0 100 100"><polygon points="50,5 61,38 96,38 68,58 79,92 50,71 21,92 32,58 4,38 39,38" fill="url(#gold)" stroke="#e69500" stroke-width="2"/><circle cx="40" cy="46" r="5" fill="#1c1b3a"/><circle cx="60" cy="46" r="5" fill="#1c1b3a"/><circle cx="41.5" cy="44.5" r="1.6" fill="#fff"/><circle cx="61.5" cy="44.5" r="1.6" fill="#fff"/><path d="M42 58 Q50 67 58 58" stroke="#1c1b3a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="32" cy="55" r="4" fill="#ff8aa5" opacity=".7"/><circle cx="68" cy="55" r="4" fill="#ff8aa5" opacity=".7"/></symbol>
+<symbol id="lu" viewBox="0 0 100 100"><path d="M62 6A46 46 0 1 0 62 94A36 36 0 1 1 62 6Z" fill="#dfe6ff" stroke="#9aa8e6" stroke-width="2"/><circle cx="38" cy="42" r="4.5" fill="#1c1b3a"/><circle cx="39.5" cy="40.5" r="1.5" fill="#fff"/><path d="M30 58 Q40 68 50 58" stroke="#1c1b3a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="27" cy="52" r="4" fill="#ff8aa5" opacity=".7"/></symbol>
+</defs></svg>
+
+<h1>📖 Книга-Звезда — книга будущего</h1>
+<div class="book" id="book">
+
+<section class="pg cover">
+ <svg viewBox="0 0 220 200" width="230" height="210"><circle cx="110" cy="100" r="88" fill="none" stroke="#fff3" stroke-dasharray="4 8"/><g class="spin"><circle cx="198" cy="100" r="9" fill="#2aa6ff"/><circle cx="22" cy="100" r="6" fill="#ff7a9c"/></g><circle cx="30" cy="30" r="2" fill="#fff" class="tw"/><circle cx="190" cy="40" r="2.5" fill="#ffd84d" class="tw"/><g class="fl"><use href="#zv" x="50" y="40" width="120" height="120" class="glow"/></g></svg>
+ <h2>Звёздик и Книга-Звезда</h2>
+ <p class="tx">Книга, которая светится, говорит и хранит секреты</p>
+ <p class="tx" style="font-size:14px">Автор: Калимов Ильдар </p>
+ <p class="tx" style="font-size:13px">Листай кнопкой «Дальше» или пальцем</p>
+</section>
+
+<section class="pg">
+ <h2>Про идею книги</h2>
+ <p class="tx">Это книга будущего, которая светится в темноте и сама читает сказку вслух. В ней есть карман с ключом, секретная страница и игра. Она соединяет бумагу, свет и цифровые технологии.</p>
+ <button class="btn" id="nightBtn">🌙 Включить свечение</button>
+ <span class="num">2</span>
+</section>
+
+<section class="pg">
+ <h2>Глава 1</h2>
+ <svg class="ill" viewBox="0 0 300 190"><rect width="300" height="190" fill="url(#sky)"/><circle cx="40" cy="30" r="2" fill="#fff" class="tw"/><circle cx="110" cy="18" r="2.5" fill="#ffd84d" class="tw"/><circle cx="250" cy="35" r="2" fill="#fff" class="tw"/><circle cx="270" cy="90" r="2.5" fill="#fff" class="tw"/><circle cx="20" cy="95" r="2" fill="#ffd84d" class="tw"/><circle cx="150" cy="270" r="140" fill="#4b3bd6"/><circle cx="90" cy="150" r="9" fill="#5d4de0"/><circle cx="215" cy="160" r="12" fill="#5d4de0"/><rect x="40" y="108" width="34" height="28" fill="#ffb400"/><polygon points="34,108 57,86 80,108" fill="#e55"/><rect x="52" y="118" width="10" height="18" fill="#7a4a1c"/><rect x="225" y="112" width="8" height="26" fill="#7a4a1c"/><circle cx="229" cy="104" r="16" fill="#3cc46a"/><circle cx="218" cy="112" r="10" fill="#2fae5a"/><g class="fl"><use href="#zv" x="118" y="45" width="62" height="62" class="glow"/></g></svg>
+ <p class="tx">На маленькой планете жил Звёздик. Он любил читать, но все книги были скучные и тяжёлые.</p>
+ <span class="num">3</span>
+</section>
+
+<section class="pg">
+ <h2>Глава 2. Зажги звёзды</h2>
+ <svg class="ill" viewBox="0 0 300 130"><rect width="300" height="130" fill="url(#sky)"/><circle cx="30" cy="20" r="2" fill="#fff" class="tw"/><circle cx="270" cy="25" r="2" fill="#ffd84d" class="tw"/><path d="M165 10 L130 70" stroke="#ffd84d" stroke-width="3" stroke-dasharray="3 6" class="tw"/><g class="fl"><g class="glow"><rect x="120" y="45" width="56" height="42" rx="4" fill="#fff7e0" stroke="#ffd84d" stroke-width="3"/><line x1="148" y1="45" x2="148" y2="87" stroke="#6c5cff" stroke-width="3"/><use href="#st" x="128" y="55" width="16" height="16"/><use href="#st" x="154" y="62" width="14" height="14"/></g></g><use href="#zv" x="40" y="68" width="48" height="48"/><circle cx="260" cy="150" r="60" fill="#4b3bd6"/></svg>
+ <p class="tx">Ночью с неба упала книга. Она светилась! Нажми на три звезды, чтобы разбудить её.</p>
+ <div class="stars"><svg class="s"><use href="#st"/></svg><svg class="s"><use href="#st"/></svg><svg class="s"><use href="#st"/></svg></div>
+ <p class="msg" id="m2"></p>
+ <span class="num">4</span>
+</section>
+
+<section class="pg">
+ <h2>Глава 3. Карман</h2>
+ <svg class="ill" viewBox="0 0 300 100"><rect width="300" height="100" fill="url(#sky)"/><circle cx="60" cy="20" r="2" fill="#fff" class="tw"/><circle cx="250" cy="30" r="2" fill="#fff" class="tw"/><g class="fl"><use href="#zv" x="40" y="22" width="60" height="60"/></g><g transform="translate(120 40)"><circle cx="14" cy="14" r="12" fill="none" stroke="#ffd84d" stroke-width="5" class="glow"/><rect x="24" y="11" width="50" height="6" fill="#ffd84d" class="glow"/><rect x="58" y="17" width="6" height="12" fill="#ffd84d"/><rect x="68" y="17" width="6" height="9" fill="#ffd84d"/></g><use href="#lu" x="225" y="20" width="55" height="55"/></svg>
+ <p class="tx">Книга умела говорить и показывать картинки. Нажми на карман — выпадет волшебный ключ.</p>
+ <div class="pocket" id="pk"><div class="key">🔑 Ключ открывает тайную страницу!</div><div class="front">карман</div></div>
+ <span class="num">5</span>
+</section>
+
+<section class="pg">
+ <h2>Секретная страница</h2>
+ <p class="tx">Нажми на клапан, чтобы открыть тайну.</p>
+ <div class="flapbox" id="fb"><div class="under">✨ В будущем книги будут читать сказки вслух и менять картинки, как мультик.</div><div class="flap">Нажми — тайна!</div></div>
+ <svg class="ill" viewBox="0 0 300 80" style="max-width:260px"><rect width="300" height="80" fill="url(#sky)"/><use href="#st" x="30" y="20" width="35" height="35" class="glow"/><use href="#st" x="130" y="30" width="28" height="28" class="glow"/><use href="#st" x="230" y="16" width="40" height="40" class="glow"/></svg>
+ <span class="num">6</span>
+</section>
+
+<section class="pg">
+ <h2>Глава 4. Найди друга</h2>
+ <p class="tx">Друг Звёздика живёт на планете с кольцом. Помоги найти её!</p>
+ <div class="pl" id="pl">
+  <svg viewBox="0 0 80 80" data-r="0"><circle cx="40" cy="40" r="28" fill="#e55"/><circle cx="30" cy="32" r="6" fill="#c33"/><circle cx="50" cy="50" r="8" fill="#c33"/></svg>
+  <svg viewBox="0 0 80 80" data-r="1"><ellipse cx="40" cy="42" rx="38" ry="9" fill="none" stroke="#ffb400" stroke-width="4"/><circle cx="40" cy="40" r="22" fill="#2aa6ff"/><path d="M20 36 Q40 44 60 36" stroke="#8ad" stroke-width="3" fill="none"/></svg>
+  <svg viewBox="0 0 80 80" data-r="0"><circle cx="40" cy="40" r="28" fill="#3b3"/><rect x="20" y="30" width="40" height="6" fill="#2a2" opacity=".7"/><rect x="24" y="46" width="32" height="6" fill="#2a2" opacity=".7"/></svg>
+ </div>
+ <p class="msg" id="m6"></p>
+ <svg class="friend" id="fr"><use href="#lu"/></svg>
+ <span class="num">7</span>
+</section>
+
+<section class="pg">
+ <h2>Конец сказки</h2>
+ <svg class="ill" viewBox="0 0 300 200"><rect width="300" height="200" fill="url(#sky)"/><circle cx="40" cy="30" r="2" fill="#fff" class="tw"/><circle cx="260" cy="30" r="2.5" fill="#ffd84d" class="tw"/><circle cx="150" cy="25" r="2" fill="#fff" class="tw"/><circle cx="280" cy="100" r="2" fill="#fff" class="tw"/><circle cx="150" cy="300" r="150" fill="#8d86c9"/><circle cx="80" cy="165" r="10" fill="#7a72b8"/><circle cx="220" cy="175" r="13" fill="#7a72b8"/>
+ <g id="rk"><g transform="translate(200 78)"><polygon points="15,70 0,92 15,84" fill="#e55"/><polygon points="45,70 60,92 45,84" fill="#e55"/><path d="M30 0 Q52 30 46 80 L14 80 Q8 30 30 0Z" fill="#fff"/><circle cx="30" cy="38" r="9" fill="#2aa6ff" stroke="#6c5cff" stroke-width="3"/><path d="M20 82 L30 112 L40 82Z" fill="#ffb400" class="flame"/></g></g>
+ <use href="#zv" x="80" y="108" width="55" height="55" class="glow"/><use href="#lu" x="30" y="115" width="46" height="46"/></svg>
+ <button class="btn" id="go">🚀 Запустить ракету</button>
+ <p class="tx">Звёздик и Луни читали книгу всю ночь. С тех пор Книга-Звезда светит каждому, кто любит читать.</p>
+ <span class="num">8</span>
+</section>
+
+<section class="pg">
+ <h2>Этикетка работы</h2>
+ <div class="lbl">
+  <b>Название работы:</b> «Звёздик и Книга-Звезда»<br>
+  <b>Описание идеи:</b> Это книга будущего, которая светится в темноте и читает сказку вслух. В ней есть карман, секретная страница и игра.<br>
+  <b>Имя и фамилия участника: Калимов Ильдар</b><br>
+  <b>Класс: 4 В</b> <br>
+  <b>Образовательная организация: "Smart Bilim"</b>
+ </div>
+ <span class="num">9</span>
+</section>
+</div>
+
+<div class="ctl"><button id="bk">← Назад</button><span id="cnt">1 / 9</span><button id="fw">Дальше →</button><button id="rd">🔊 Читать вслух</button></div>
+<p class="hint">Нажимай на звёзды, карман, клапан, планеты и ракету.</p>
+<script>
+var P=[].slice.call(document.querySelectorAll('.pg')),n=0,N=P.length,$=function(i){return document.getElementById(i)};
+P.forEach(function(p,k){p.style.zIndex=N-k});
+function show(d){n=Math.max(0,Math.min(N-1,n+d));P.forEach(function(p,k){p.classList.toggle('t',k<n)});$('cnt').textContent=(n+1)+' / '+N;if(window.speechSynthesis)speechSynthesis.cancel()}
+$('fw').onclick=function(){show(1)};$('bk').onclick=function(){show(-1)};
+document.addEventListener('keydown',function(e){if(e.target.isContentEditable)return;if(e.key==='ArrowRight')show(1);if(e.key==='ArrowLeft')show(-1)});
+var x0=null,bk=$('book');
+bk.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+bk.addEventListener('touchend',function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>70)show(d<0?1:-1);x0=null});
+$('nightBtn').onclick=function(){var o=document.body.classList.toggle('night');this.textContent=o?'☀️ Выключить свечение':'🌙 Включить свечение';document.body.style.setProperty('--bg2',o?'#000':'#0b1030')};
+document.querySelectorAll('.s').forEach(function(s){s.onclick=function(){s.classList.add('on');if(document.querySelectorAll('.s.on').length===3)$('m2').textContent='✨ Книга проснулась! Листай дальше.'}});
+$('pk').onclick=function(){document.querySelector('.key').classList.toggle('out')};
+$('fb').onclick=function(){this.classList.toggle('open')};
+document.querySelectorAll('#pl svg').forEach(function(s){s.onclick=function(){var ok=s.dataset.r==='1';$('m6').textContent=ok?'🎉 Верно! Друг Луни ждал тебя!':'Не туда. Попробуй ещё раз!';$('fr').style.display=ok?'block':'none'}});
+$('go').onclick=function(){$('rk').classList.toggle('fly')};
+$('rd').onclick=function(){if(!window.speechSynthesis)return;speechSynthesis.cancel();var t=[].slice.call(P[n].querySelectorAll('h2,.tx')).map(function(e){return e.textContent}).join('. ');var u=new SpeechSynthesisUtterance(t);u.lang='ru-RU';speechSynthesis.speak(u)};
+</script></body></html>

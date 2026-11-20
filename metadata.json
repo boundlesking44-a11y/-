@@ -1,0 +1,6 @@
+{
+  "name": "Звёздик и Книга-Звезда",
+  "description": "Интерактивная книга-сказка будущего на 18 страниц с квестами, тайниками, звуками и космическим приключением.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
